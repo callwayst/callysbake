@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Voucher;
 use App\Models\Product;
 
@@ -12,21 +11,22 @@ class UserDashboardController extends Controller
     {
         $user = auth()->user();
 
-        $cartCount         = $user->cart?->items()->count() ?? 0;
-        $totalOrders       = $user->orders()->count();
-        $pendingOrders     = $user->orders()->where('status', 'Pending')->count();
-        $completedOrders   = $user->orders()->where('status', 'Completed')->count();
+        $cartCount       = $user->cart?->items()->count() ?? 0;
+        $totalOrders     = $user->orders()->count();
+        $paidOrders      = $user->orders()->where('status', 'paid')->count();
+        $shippedOrders   = $user->orders()->where('status', 'shipped')->count();
+        $completedOrders = $user->orders()->where('status', 'done')->count();
+        $cancelledOrders = $user->orders()->where('status', 'cancelled')->count();
+
         $availableVouchers = Voucher::where('user_id', $user->id)
                                     ->where('is_active', true)->count();
         $recentOrders      = $user->orders()->with('items')->latest()->take(5)->get();
-
-        // Pakai scope topSelling dari model — withSum qty terjual
-        $topProducts = Product::topSelling(6)->get();
+        $topProducts       = Product::topSelling(6)->get();
 
         return view('user.dashboard', compact(
-            'cartCount', 'totalOrders', 'pendingOrders',
-            'completedOrders', 'availableVouchers',
-            'recentOrders', 'topProducts'
+            'cartCount', 'totalOrders', 'paidOrders',
+            'shippedOrders', 'completedOrders', 'cancelledOrders',
+            'availableVouchers', 'recentOrders', 'topProducts'
         ));
     }
 }

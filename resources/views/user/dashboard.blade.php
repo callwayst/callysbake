@@ -16,7 +16,7 @@
       @foreach([
         ['icon'=>'bx-cart',        'val'=>$cartCount,       'label'=>'Di Keranjang'],
         ['icon'=>'bx-package',     'val'=>$totalOrders,     'label'=>'Total Order'],
-        ['icon'=>'bx-time-five',   'val'=>$pendingOrders,   'label'=>'Pending'],
+        ['icon'=>'bx-time-five',   'val'=>$paidOrders,      'label'=>'Menunggu'],
         ['icon'=>'bx-check-circle','val'=>$completedOrders, 'label'=>'Selesai'],
       ] as $s)
         <div class="bg-white/15 backdrop-blur-sm rounded-xl px-4 py-3 flex items-center gap-3 border border-white/20">
@@ -117,11 +117,18 @@
             @foreach($recentOrders as $order)
               @php
                 $statusColor = match($order->status) {
-                  'Completed'  => 'bg-green-100 text-green-700',
-                  'Pending'    => 'bg-yellow-100 text-yellow-700',
-                  'Processing' => 'bg-blue-100 text-blue-700',
-                  'Cancelled'  => 'bg-red-100 text-red-700',
-                  default      => 'bg-gray-100 text-gray-600',
+                  'done'      => 'bg-green-100 text-green-700',
+                  'paid'      => 'bg-yellow-100 text-yellow-700',
+                  'shipped'   => 'bg-indigo-100 text-indigo-700',
+                  'cancelled' => 'bg-red-100 text-red-700',
+                  default     => 'bg-gray-100 text-gray-600',
+                };
+                $statusLabel = match($order->status) {
+                  'done'      => 'Selesai',
+                  'paid'      => 'Menunggu',
+                  'shipped'   => 'Dikirim',
+                  'cancelled' => 'Dibatalkan',
+                  default     => ucfirst($order->status),
                 };
               @endphp
               <a href="{{ route('orders.show', $order->id) }}"
@@ -142,7 +149,7 @@
                     Rp {{ number_format($order->final_price, 0, ',', '.') }}
                   </p>
                   <span class="text-xs font-medium px-2.5 py-1 rounded-full {{ $statusColor }}">
-                    {{ $order->status }}
+                    {{ $statusLabel }}
                   </span>
                   <i class='bx bx-chevron-right text-[#D99C79] group-hover:text-[#A65005] transition'></i>
                 </div>
@@ -235,7 +242,7 @@
       </div>
     </div>
 
-    {{-- STATISTIK — flex-1 supaya ikut tinggi kolom kiri --}}
+    {{-- STATISTIK --}}
     <div class="bg-white rounded-2xl border border-[#F2D4C2] shadow-sm p-6 flex flex-col flex-1">
       <h2 class="font-bold text-[#A65005] mb-4 flex items-center gap-2"
           style="font-family:'Playfair Display',serif">
@@ -244,8 +251,10 @@
       <div class="space-y-1 flex-1">
         @foreach([
           ['label'=>'Total Order',  'val'=>$totalOrders,     'icon'=>'bx-package',      'color'=>'text-blue-500',   'bar'=>'bg-blue-400'],
+          ['label'=>'Menunggu',     'val'=>$paidOrders,      'icon'=>'bx-time-five',    'color'=>'text-yellow-500', 'bar'=>'bg-yellow-400'],
+          ['label'=>'Dikirim',      'val'=>$shippedOrders,   'icon'=>'bx-car',          'color'=>'text-indigo-500', 'bar'=>'bg-indigo-400'],
           ['label'=>'Selesai',      'val'=>$completedOrders, 'icon'=>'bx-check-circle', 'color'=>'text-green-500',  'bar'=>'bg-green-400'],
-          ['label'=>'Pending',      'val'=>$pendingOrders,   'icon'=>'bx-time-five',    'color'=>'text-yellow-500', 'bar'=>'bg-yellow-400'],
+          ['label'=>'Dibatalkan',   'val'=>$cancelledOrders, 'icon'=>'bx-x-circle',     'color'=>'text-red-500',    'bar'=>'bg-red-400'],
           ['label'=>'Di Keranjang', 'val'=>$cartCount,       'icon'=>'bx-cart',         'color'=>'text-[#A65005]',  'bar'=>'bg-[#A65005]'],
         ] as $stat)
           @php $pct = $totalOrders > 0 ? min(100, round($stat['val'] / $totalOrders * 100)) : 0; @endphp
