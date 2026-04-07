@@ -112,8 +112,8 @@
 
     {{-- DESKTOP TABLE --}}
     <div class="hidden md:block bg-white rounded-3xl shadow-md border border-[#EAD9CE] overflow-hidden">
-        <div class="overflow-x-auto">
-            <table class="min-w-full" style="min-width:900px;">
+        <div class="overflow-x-auto w-full">
+            <table class="w-full" style="min-width:900px;">
                 <thead>
                     <tr style="background:linear-gradient(135deg,#800000,#260101);">
                         <th class="px-4 py-4 text-left text-xs font-black text-[#F2D4C2] uppercase tracking-widest w-20">Order</th>

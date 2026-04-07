@@ -28,7 +28,7 @@ class OrderController extends Controller
         }
 
         $orders      = $query->get();
-        $perPage     = 10;
+        $perPage     = 5;
         $currentPage = \Illuminate\Pagination\LengthAwarePaginator::resolveCurrentPage();
         $pagedItems  = $orders->slice(($currentPage - 1) * $perPage, $perPage)->values();
 

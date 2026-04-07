@@ -48,14 +48,14 @@
       </select>
 
       <button type="submit"
-              class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition hover:opacity-90"
+              class="px-9 py-2.5 rounded-xl text-sm font-semibold text-white transition hover:opacity-90"
               style="background:linear-gradient(135deg,#A65005,#592202)">
         Cari
       </button>
 
       @if(request()->hasAny(['q','category','price_range']))
         <a href="{{ route('products.index') }}"
-           class="px-4 py-2.5 rounded-xl text-sm font-medium text-[#A65005] bg-[#FDF3EC] border border-[#F2D4C2] hover:border-[#D99C79] transition">
+           class="px-5 py-2.5 rounded-xl text-sm font-medium text-[#A65005] bg-[#FDF3EC] border border-[#F2D4C2] hover:border-[#D99C79] transition">
           Reset
         </a>
       @endif

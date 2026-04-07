@@ -30,7 +30,7 @@ class UserController extends Controller
         }
 
         $allUsers = User::all();
-        $users    = $query->paginate(12)->withQueryString();
+        $users    = $query->paginate(6)->withQueryString();
 
         return view('admin.users.index', compact('allUsers', 'users'));
     }
@@ -47,7 +47,7 @@ class UserController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email',
             'password' => 'required|min:8',
-            'role'     => 'required|in:admin,kasir,customer',
+            'role'     => 'required|in:admin,user',
             'phone'    => 'nullable|string|max:20',   // ← tambah ini
             'address'  => 'nullable|string|max:500',  // ← tambah ini
         ]);
@@ -76,7 +76,7 @@ class UserController extends Controller
             'name'     => 'required|string|max:255',
             'email'    => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:8',
-            'role'     => 'required|in:admin,kasir,customer',
+            'role'     => 'required|in:admin,user',
             'phone'    => 'nullable|string|max:20',   // ← tambah ini
             'address'  => 'nullable|string|max:500',  // ← tambah ini
         ]);

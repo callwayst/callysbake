@@ -62,8 +62,7 @@
                                focus:outline-none focus:ring-2 focus:ring-[#A65005]/30 focus:border-[#A65005] transition"
                         required>
                     <option value="admin"    {{ old('role', $user->role ?? '') === 'admin'    ? 'selected' : '' }}>Admin</option>
-                    <option value="kasir"    {{ old('role', $user->role ?? '') === 'kasir'    ? 'selected' : '' }}>Kasir</option>
-                    <option value="customer" {{ old('role', $user->role ?? '') === 'customer' ? 'selected' : '' }}>Customer</option>
+                    <option value="user" {{ old('role', $user->role ?? '') === 'user' ? 'selected' : '' }}>User</option>
                 </select>
                 @error('role')<p class="text-xs text-red-500">{{ $message }}</p>@enderror
             </div>
