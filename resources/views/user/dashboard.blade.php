@@ -16,7 +16,7 @@
       @foreach([
         ['icon'=>'bx-cart',        'val'=>$cartCount,       'label'=>'Di Keranjang'],
         ['icon'=>'bx-package',     'val'=>$totalOrders,     'label'=>'Total Order'],
-        ['icon'=>'bx-time-five',   'val'=>$paidOrders,      'label'=>'Menunggu'],
+        ['icon'=>'bx-time-five',   'val'=>$pendingOrders,   'label'=>'Menunggu Bayar'],
         ['icon'=>'bx-check-circle','val'=>$completedOrders, 'label'=>'Selesai'],
       ] as $s)
         <div class="bg-white/15 backdrop-blur-sm rounded-xl px-4 py-3 flex items-center gap-3 border border-white/20">
@@ -121,13 +121,15 @@
                   'paid'      => 'bg-yellow-100 text-yellow-700',
                   'shipped'   => 'bg-indigo-100 text-indigo-700',
                   'cancelled' => 'bg-red-100 text-red-700',
+                  'pending'   => 'bg-orange-100 text-orange-700',
                   default     => 'bg-gray-100 text-gray-600',
                 };
                 $statusLabel = match($order->status) {
                   'done'      => 'Selesai',
-                  'paid'      => 'Menunggu',
+                  'paid'      => 'Sedang Dikemas',
                   'shipped'   => 'Dikirim',
                   'cancelled' => 'Dibatalkan',
+                  'pending'   => 'Menunggu Bayar',
                   default     => ucfirst($order->status),
                 };
               @endphp
@@ -250,12 +252,13 @@
       </h2>
       <div class="space-y-1 flex-1">
         @foreach([
-          ['label'=>'Total Order',  'val'=>$totalOrders,     'icon'=>'bx-package',      'color'=>'text-blue-500',   'bar'=>'bg-blue-400'],
-          ['label'=>'Menunggu',     'val'=>$paidOrders,      'icon'=>'bx-time-five',    'color'=>'text-yellow-500', 'bar'=>'bg-yellow-400'],
-          ['label'=>'Dikirim',      'val'=>$shippedOrders,   'icon'=>'bx-car',          'color'=>'text-indigo-500', 'bar'=>'bg-indigo-400'],
-          ['label'=>'Selesai',      'val'=>$completedOrders, 'icon'=>'bx-check-circle', 'color'=>'text-green-500',  'bar'=>'bg-green-400'],
-          ['label'=>'Dibatalkan',   'val'=>$cancelledOrders, 'icon'=>'bx-x-circle',     'color'=>'text-red-500',    'bar'=>'bg-red-400'],
-          ['label'=>'Di Keranjang', 'val'=>$cartCount,       'icon'=>'bx-cart',         'color'=>'text-[#A65005]',  'bar'=>'bg-[#A65005]'],
+          ['label'=>'Total Order',    'val'=>$totalOrders,     'icon'=>'bx-package',      'color'=>'text-blue-500',   'bar'=>'bg-blue-400'],
+          ['label'=>'Menunggu Bayar', 'val'=>$pendingOrders,   'icon'=>'bx-time-five',    'color'=>'text-orange-500', 'bar'=>'bg-orange-400'],
+          ['label'=>'Sedang Dikemas', 'val'=>$paidOrders,      'icon'=>'bx-box',          'color'=>'text-yellow-500', 'bar'=>'bg-yellow-400'],
+          ['label'=>'Dikirim',        'val'=>$shippedOrders,   'icon'=>'bx-car',          'color'=>'text-indigo-500', 'bar'=>'bg-indigo-400'],
+          ['label'=>'Selesai',        'val'=>$completedOrders, 'icon'=>'bx-check-circle', 'color'=>'text-green-500',  'bar'=>'bg-green-400'],
+          ['label'=>'Dibatalkan',     'val'=>$cancelledOrders, 'icon'=>'bx-x-circle',     'color'=>'text-red-500',    'bar'=>'bg-red-400'],
+          ['label'=>'Di Keranjang',   'val'=>$cartCount,       'icon'=>'bx-cart',         'color'=>'text-[#A65005]',  'bar'=>'bg-[#A65005]'],
         ] as $stat)
           @php $pct = $totalOrders > 0 ? min(100, round($stat['val'] / $totalOrders * 100)) : 0; @endphp
           <div class="py-2.5 border-b border-[#F2D4C2] last:border-0">
