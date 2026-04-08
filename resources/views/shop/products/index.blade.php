@@ -28,37 +28,41 @@
 
     {{-- Filters --}}
     <div class="flex gap-2 flex-wrap sm:flex-nowrap">
-      <select name="category" onchange="this.form.submit()"
-              class="border border-[#F2D4C2] rounded-xl px-3 py-2.5 text-sm text-[#260101] bg-[#fdfaf8] outline-none focus:border-[#D99C79] transition">
-        <option value="">Semua Kategori</option>
-        @foreach($categories as $cat)
-          <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
-            {{ $cat->name }}
-          </option>
-        @endforeach
-      </select>
+      <div class="flex gap-2 w-full sm:w-auto">
+        <select name="category" onchange="this.form.submit()"
+                class="flex-1 border border-[#F2D4C2] rounded-xl px-3 py-2.5 text-sm text-[#260101] bg-[#fdfaf8] outline-none focus:border-[#D99C79] transition min-w-0">
+          <option value="">Semua Kategori</option>
+          @foreach($categories as $cat)
+            <option value="{{ $cat->id }}" {{ request('category') == $cat->id ? 'selected' : '' }}>
+              {{ $cat->name }}
+            </option>
+          @endforeach
+        </select>
 
-      <select name="price_range" onchange="this.form.submit()"
-              class="border border-[#F2D4C2] rounded-xl px-3 py-2.5 text-sm text-[#260101] bg-[#fdfaf8] outline-none focus:border-[#D99C79] transition">
-        <option value="">Semua Harga</option>
-        <option value="0-50000"       {{ request('price_range') == '0-50000'       ? 'selected' : '' }}>0 – 50k</option>
-        <option value="50001-100000"  {{ request('price_range') == '50001-100000'  ? 'selected' : '' }}>50k – 100k</option>
-        <option value="100001-200000" {{ request('price_range') == '100001-200000' ? 'selected' : '' }}>100k – 200k</option>
-        <option value="200001-500000" {{ request('price_range') == '200001-500000' ? 'selected' : '' }}>200k – 500k</option>
-      </select>
+        <select name="price_range" onchange="this.form.submit()"
+                class="flex-1 border border-[#F2D4C2] rounded-xl px-3 py-2.5 text-sm text-[#260101] bg-[#fdfaf8] outline-none focus:border-[#D99C79] transition min-w-0">
+          <option value="">Semua Harga</option>
+          <option value="0-50000"       {{ request('price_range') == '0-50000'       ? 'selected' : '' }}>0 – 50k</option>
+          <option value="50001-100000"  {{ request('price_range') == '50001-100000'  ? 'selected' : '' }}>50k – 100k</option>
+          <option value="100001-200000" {{ request('price_range') == '100001-200000' ? 'selected' : '' }}>100k – 200k</option>
+          <option value="200001-500000" {{ request('price_range') == '200001-500000' ? 'selected' : '' }}>200k – 500k</option>
+        </select>
+      </div>
 
-      <button type="submit"
-              class="px-9 py-2.5 rounded-xl text-sm font-semibold text-white transition hover:opacity-90"
-              style="background:linear-gradient(135deg,#A65005,#592202)">
-        Cari
-      </button>
+      <div class="flex gap-2 w-full sm:w-auto">
+        <button type="submit"
+                class="flex-1 sm:flex-none px-9 py-2.5 rounded-xl text-sm font-semibold text-white transition hover:opacity-90"
+                style="background:linear-gradient(135deg,#A65005,#592202)">
+          Cari
+        </button>
 
-      @if(request()->hasAny(['q','category','price_range']))
-        <a href="{{ route('products.index') }}"
-           class="px-5 py-2.5 rounded-xl text-sm font-medium text-[#A65005] bg-[#FDF3EC] border border-[#F2D4C2] hover:border-[#D99C79] transition">
-          Reset
-        </a>
-      @endif
+        @if(request()->hasAny(['q','category','price_range']))
+          <a href="{{ route('products.index') }}"
+            class="flex-1 sm:flex-none text-center px-5 py-2.5 rounded-xl text-sm font-medium text-[#A65005] bg-[#FDF3EC] border border-[#F2D4C2] hover:border-[#D99C79] transition">
+            Reset
+          </a>
+        @endif
+      </div>
     </div>
 
   </form>

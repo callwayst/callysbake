@@ -61,9 +61,8 @@
                 $originalPrice  = $item->variant->price;
                 $qty            = $item->quantity;
                 $subtotal       = $originalPrice * $qty;
-                // Diskon dihitung dari SUBTOTAL
                 $discountAmount = $appliedVoucher ? $appliedVoucher->calculateDiscount($subtotal) : 0;
-                $discountAmount = min($discountAmount, $subtotal); // jangan melebihi subtotal
+                $discountAmount = min($discountAmount, $subtotal);
                 $finalSubtotal  = max(0, $subtotal - $discountAmount);
             @endphp
             <div class="cart-item bg-white rounded-2xl p-4 shadow-sm transition-all duration-300"
@@ -146,7 +145,6 @@
                                     @endif
                                 </span>
                             </div>
-                            {{-- FIX: gunakan route yang benar dengan method POST --}}
                             <form action="{{ route('cart.removeVoucher') }}" method="POST" class="flex-shrink-0">
                                 @csrf
                                 <input type="hidden" name="cart_item_id" value="{{ $item->id }}">
@@ -157,26 +155,29 @@
                         </div>
                     @else
                         @if($userVouchers->isNotEmpty())
-                        <form action="{{ route('cart.applyVoucher') }}" method="POST" class="flex gap-2">
+                        <form action="{{ route('cart.applyVoucher') }}" method="POST">
                             @csrf
                             <input type="hidden" name="cart_item_id" value="{{ $item->id }}">
-                            <select name="voucher_code"
-                                    class="flex-1 border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#A65005] bg-gray-50">
-                                <option value="">-- Pilih Voucher --</option>
-                                @foreach($userVouchers as $v)
-                                <option value="{{ $v->code }}">
-                                    {{ $v->code }}
-                                    — {{ $v->type === 'percent'
-                                        ? $v->value.'% off'.($v->max_discount ? ' (maks. IDR '.number_format($v->max_discount,0,',','.').')' : '')
-                                        : 'IDR '.number_format($v->value,0,',','.').' off' }}
-                                    @if($v->min_purchase > 0) | min. IDR {{ number_format($v->min_purchase,0,',','.') }} @endif
-                                </option>
-                                @endforeach
-                            </select>
-                            <button type="submit"
-                                    class="bg-[#800000] text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-[#600000] whitespace-nowrap">
-                                Pakai
-                            </button>
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <select name="voucher_code"
+                                        class="flex-1 min-w-0 border border-gray-200 rounded-xl px-3 py-2 text-sm text-gray-700 focus:outline-none focus:border-[#A65005] bg-gray-50"
+                                        style="max-width:100%; text-overflow:ellipsis; overflow:hidden;">
+                                    <option value="">-- Pilih Voucher --</option>
+                                    @foreach($userVouchers as $v)
+                                    <option value="{{ $v->code }}">
+                                        {{ $v->code }}
+                                        — {{ $v->type === 'percent'
+                                            ? $v->value.'% off'.($v->max_discount ? ' (maks. IDR '.number_format($v->max_discount,0,',','.').')' : '')
+                                            : 'IDR '.number_format($v->value,0,',','.').' off' }}
+                                        @if($v->min_purchase > 0) | min. IDR {{ number_format($v->min_purchase,0,',','.') }} @endif
+                                    </option>
+                                    @endforeach
+                                </select>
+                                <button type="submit"
+                                        class="w-full sm:w-auto bg-[#800000] text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-[#600000] whitespace-nowrap">
+                                    Pakai
+                                </button>
+                            </div>
                         </form>
                         @else
                         <p class="text-xs text-gray-400 italic">
@@ -221,10 +222,6 @@
 <script>
 const fmt = n => "IDR " + Math.round(n).toLocaleString('id-ID');
 
-/**
- * Hitung diskon dari SUBTOTAL (price * qty), bukan per unit.
- * Konsisten dengan logika di PHP controller dan Voucher model.
- */
 function calcDiscount(subtotal, type, value, maxDiscount, minPurchase) {
     if (!type || subtotal <= 0) return 0;
     if (minPurchase > 0 && subtotal < minPurchase) return 0;
@@ -237,7 +234,6 @@ function calcDiscount(subtotal, type, value, maxDiscount, minPurchase) {
         disc = Math.min(disc, maxDiscount);
     }
 
-    // Diskon tidak boleh melebihi subtotal
     return Math.min(disc, subtotal);
 }
 
@@ -254,7 +250,6 @@ function calculate() {
         const minPurchase = parseFloat(card.dataset.minPurchase) || 0;
 
         const subtotal = price * qty;
-        // FIX: pass subtotal ke calcDiscount, bukan price
         const discount = calcDiscount(subtotal, vType, vValue, vMax, minPurchase);
         const finalSub = subtotal - discount;
 

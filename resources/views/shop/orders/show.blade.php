@@ -150,6 +150,10 @@
                             <p class="font-bold text-base" style="color:#260101;">{{ $order->address->receiver_name ?? '-' }}</p>
                             <p class="text-sm text-gray-500 mt-1 leading-relaxed">{{ $order->address->full_address ?? '-' }}</p>
                             <p class="text-sm text-gray-500 mt-0.5">{{ $order->address->phone ?? '-' }}</p>
+                            <p class="text-xs text-gray-500 mt-0.5">
+                                <i class='bx bx-envelope'></i>
+                                {{ $order->address->email ?? $order->user->email ?? '-' }}
+                            </p>
                         </div>
                     </div>
                 </div>

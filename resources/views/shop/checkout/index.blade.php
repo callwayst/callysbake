@@ -89,6 +89,7 @@
                                 </div>
                                 <p class="text-xs text-gray-500 leading-relaxed">{{ $address->full_address }}</p>
                                 <p class="text-xs text-gray-500">{{ $address->phone }}</p>
+                                <p class="text-xs text-gray-500">{{ $address->email ?? auth()->user()->email }}</p>
                                 <div class="flex items-center gap-3 mt-2">
                                     @if(!$address->is_default)
                                     <button type="button"
@@ -157,6 +158,12 @@
                             <input type="text" name="phone" placeholder="08xx-xxxx-xxxx"
                                    value="{{ old('phone') }}"
                                    class="w-full border-2 border-[#F2D4C2] focus:border-[#A65005] outline-none rounded-xl px-3 py-2.5 text-sm bg-white" required>
+                        </div>
+                        <div>
+                            <label class="text-xs font-semibold text-gray-600 mb-1 block">Email *</label>
+                            <input type="email" name="email" placeholder="contoh@email.com"
+                                value="{{ old('email', auth()->user()->email) }}"
+                                class="w-full border-2 border-[#F2D4C2] focus:border-[#A65005] outline-none rounded-xl px-3 py-2.5 text-sm bg-white" required>
                         </div>
                         <div>
                             <label class="text-xs font-semibold text-gray-600 mb-1 block">Alamat Lengkap *</label>
@@ -237,6 +244,7 @@
                             </div>
                             <p class="text-xs text-gray-500 leading-relaxed">{{ $displayAddress->full_address }}</p>
                             <p class="text-xs text-gray-500">{{ $displayAddress->phone }}</p>
+                            <p class="text-xs text-gray-500">{{ $displayAddress->email ?? auth()->user()->email }}</p>
                         </div>
                         <button @click="showAddressModal = true" type="button"
                             class="flex-shrink-0 flex items-center gap-1 text-[#F2D4C2] text-xs font-bold px-3 py-2 rounded-xl transition-all hover:-translate-y-0.5 shadow-md whitespace-nowrap"
