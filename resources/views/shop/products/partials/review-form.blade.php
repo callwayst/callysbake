@@ -24,7 +24,7 @@
     {{-- COMMENT --}}
     <div>
       <label class="text-xs font-semibold text-[#D99C79] uppercase tracking-wide block mb-2">Komentar</label>
-      <textarea name="content" rows="3" placeholder="Bagaimana pengalaman kamu dengan produk ini?"
+      <textarea name="comment" rows="3" placeholder="Bagaimana pengalaman kamu dengan produk ini?"
                 class="w-full border-2 border-[#F2D4C2] focus:border-[#D99C79] outline-none rounded-xl px-4 py-3 text-sm text-[#260101] bg-[#fdfaf8] resize-none transition placeholder-[#D99C79]"></textarea>
     </div>
 

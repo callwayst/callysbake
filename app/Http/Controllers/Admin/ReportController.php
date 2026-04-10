@@ -190,7 +190,7 @@ class ReportController extends Controller
                 fclose($handle);
             }, 'report.csv'),
 
-            'excel' => Excel::download(new ReportExport($summary, $analytics, $inventory, $ordersDetail, $sections), 'report.xlsx'),
+            'excel' => Excel::download(new ReportExport($summary, $analytics, $inventory, $ordersDetail, $sections), 'report.xlsx', \Maatwebsite\Excel\Excel::XLSX),
 
             'pdf' => Pdf::loadView('admin.reports.pdf', [
                 'data'         => $data,

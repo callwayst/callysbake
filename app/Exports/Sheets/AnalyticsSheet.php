@@ -3,8 +3,9 @@
 namespace App\Exports\Sheets;
 
 use Maatwebsite\Excel\Concerns\FromArray;
+use Maatwebsite\Excel\Concerns\WithTitle;
 
-class AnalyticsSheet implements FromArray
+class AnalyticsSheet implements FromArray, WithTitle
 {
     protected $analytics;
 
@@ -13,11 +14,16 @@ class AnalyticsSheet implements FromArray
         $this->analytics = $analytics;
     }
 
+    public function title(): string
+    {
+        return 'Analytics';
+    }
+
     public function array(): array
     {
+        
         $data = [];
 
-        // Daily Sales
         $data[] = ['ANALYTICS - Daily Sales'];
         $data[] = ['Date','Total Sales','Orders Count'];
         foreach($this->analytics['dailyLabels'] as $i => $label){
@@ -29,7 +35,6 @@ class AnalyticsSheet implements FromArray
         }
         $data[] = [];
 
-        // Top Products
         $data[] = ['ANALYTICS - Top Products'];
         $data[] = ['Product','Quantity Sold'];
         foreach($this->analytics['topProducts'] as $p){
