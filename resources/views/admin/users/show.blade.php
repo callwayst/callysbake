@@ -143,7 +143,7 @@
                     [
                         'label' => 'Total Belanja',
                         'sub'   => 'Pengeluaran',
-                        'value' => 'Rp ' . number_format($orders->sum('total'), 0, ',', '.'),
+                        'value' => 'Rp ' . number_format($orders->sum('final_price'), 0, ',', '.'),
                         'icon'  => 'bxs-wallet',
                         'color' => 'from-emerald-500 to-emerald-700',
                     ],
@@ -202,18 +202,20 @@
                                     {{ $order->created_at->format('d M Y, H:i') }}
                                 </td>
                                 <td class="px-5 py-3.5 font-semibold text-[#260101]">
-                                    Rp {{ number_format($order->total ?? 0, 0, ',', '.') }}
+                                    Rp {{ number_format($order->final_price ?? 0, 0, ',', '.') }}
                                 </td>
                                 <td class="px-5 py-3.5">
-                                    @php
-                                        $statusMap = [
-                                            'pending'    => ['bg-amber-50 text-amber-700',    'bx-time',          'Pending'],
-                                            'processing' => ['bg-blue-50 text-blue-700',       'bx-loader-circle', 'Diproses'],
-                                            'completed'  => ['bg-emerald-50 text-emerald-700', 'bxs-check-circle', 'Selesai'],
-                                            'cancelled'  => ['bg-red-50 text-red-600',         'bxs-x-circle',     'Dibatalkan'],
-                                        ];
-                                        $s = $statusMap[$order->status] ?? ['bg-gray-100 text-gray-500', 'bx-question-mark', ucfirst($order->status ?? '-')];
-                                    @endphp
+                                @php
+                                    $statusMap = [
+                                        'pending'    => ['bg-amber-50 text-amber-700',    'bxs-time',           'Pending'],
+                                        'paid'       => ['bg-blue-50 text-blue-700',       'bxs-credit-card',    'Paid'],
+                                        'shipped'    => ['bg-purple-50 text-purple-700',   'bxs-package',        'Shipped'],
+                                        'done'       => ['bg-emerald-50 text-emerald-700', 'bxs-check-circle',   'Done'],
+                                        'dibatalkan' => ['bg-red-50 text-red-600',         'bxs-x-circle',       'Dibatalkan'],
+                                        'cancelled'  => ['bg-red-50 text-red-600',         'bxs-x-circle',       'Dibatalkan'],
+                                    ];
+                                    $s = $statusMap[$order->status] ?? ['bg-gray-100 text-gray-500', 'bxs-help-circle', ucfirst($order->status ?? '-')];
+                                @endphp
                                     <span class="inline-flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-full {{ $s[0] }}">
                                         <i class="bx {{ $s[1] }}"></i> {{ $s[2] }}
                                     </span>

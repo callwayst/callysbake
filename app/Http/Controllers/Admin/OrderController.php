@@ -67,9 +67,7 @@ class OrderController extends Controller
         ]);
 
         $order = Order::with('items.variant')->findOrFail($id);
-
-        // ✅ Kalau dibatalkan, kembalikan stok — tapi hanya kalau status sebelumnya bukan cancelled
-        // (cegah stok dikembalikan dua kali kalau admin klik cancelled berkali-kali)
+        
         if ($request->status === 'cancelled' && $order->status !== 'cancelled') {
             foreach ($order->items as $item) {
                 if ($item->variant) {
