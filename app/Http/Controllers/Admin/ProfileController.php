@@ -15,23 +15,21 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function update(Request $request)
+    public function updateInfo(Request $request)
     {
         $user = auth()->user();
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email',
-            'phone' => 'nullable|string|max:20',
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email',
+            'phone'   => 'nullable|string|max:20',
             'address' => 'nullable|string',
-            'bio' => 'nullable|string',
+            'bio'     => 'nullable|string',
         ]);
 
-        $user->update($request->only(
-            'name','email','phone','address','bio'
-        ));
+        $user->update($request->only('name', 'email', 'phone', 'address', 'bio'));
 
-        return back()->with('status','Profile updated');
+        return redirect()->route('admin.profile.edit')->with('status', 'Profile updated');
     }
 
     public function updatePassword(Request $request)
@@ -49,6 +47,6 @@ class ProfileController extends Controller
             'password' => Hash::make($request->password)
         ]);
 
-        return back()->with('status','Password updated');
+        return redirect()->route('admin.profile.edit')->with('status', 'Password updated');
     }
 }

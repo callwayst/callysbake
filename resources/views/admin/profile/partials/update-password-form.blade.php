@@ -1,6 +1,6 @@
 <form method="POST" action="{{ route('admin.profile.password.update') }}" class="space-y-4">
     @csrf
-    @method('PUT')
+    @method('PATCH')
 
     @if($errors->has('current_password') || $errors->has('password'))
     <div class="bg-red-50 border border-red-200 rounded-xl px-4 py-3">
